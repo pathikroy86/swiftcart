@@ -1,10 +1,13 @@
 document.getElementById("home-btn").addEventListener('click', () => {
     document.getElementById("default-banner").classList.remove("hidden");
     document.getElementById("category-container").classList.add("hidden");
+    document.getElementById("products-container").innerHTML = "";
 })
 document.getElementById("products-btn").addEventListener('click', () => {
     document.getElementById("default-banner").classList.add("hidden");
     document.getElementById("category-container").classList.remove("hidden");
+    document.getElementById("products-container").innerHTML = "";
+    loadCategories();
 })
 
 const removeActive = () => {
@@ -54,7 +57,7 @@ const displayCategoryData = (products) => {
                             ${product.title} <br> $${product.price}
                         </h2>
                         <div class="card-actions justify-between">
-                            <div onclick = loadDetails(${product.id}) class="btn px-5">details</div>
+                            <div onclick="loadDetails(${product.id})" class="btn px-5">details</div>
                             <div class="btn btn-primary px-5"><i class="fa-solid fa-cart-arrow-down"></i> Add</div>
                         </div>
                     </div>
@@ -91,7 +94,29 @@ const displayCategories = (categories) => {
 const loadDetails = (id) => {
     fetch(`https://fakestoreapi.com/products/${id}`)
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => displayDetails(data))
+}
+const displayDetails = (details) => {
+    const modal = document.getElementById('my_modal_5');
+    modal.innerHTML = `
+        <div class="modal-box">
+                <h3 class="text-lg font-bold">${details.title}</h3>
+                <p class="py-2">${details.description}</p>
+                <p class="py-2 font-bold">Price: $${details.price}</p>
+                <p class="py-2 font-bold">Rating: ${details.rating.rate}</p>
+                <div class="flex justify-between">
+                    <button class="btn btn-soft btn-primary">Buy Now</button>
+                    <button class="btn btn-soft btn-primary">Add to Cart</button>
+                </div>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn">Close</button>
+                    </form>
+                </div>
+            </div>
+    `;
+    modal.showModal();
 }
 
 loadCategories();
