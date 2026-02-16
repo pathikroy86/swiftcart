@@ -7,20 +7,33 @@ document.getElementById("products-btn").addEventListener('click', () => {
     document.getElementById("category-container").classList.remove("hidden");
 })
 
+const removeActive = () => {
+    const arr = document.getElementsByClassName('btn');
+    for (const element of arr) {
+        element.classList.remove('active');
+    }
+}
+
 const loadCategories = () => {
     fetch('https://fakestoreapi.com/products/categories')
         .then(res => res.json())
-        .then(data => displayCategories(data))
+        .then(data => {
+            displayCategories(data)
+        })
 }
 const loadAllData = () => {
     fetch('https://fakestoreapi.com/products')
         .then(res => res.json())
-        .then(data => displayCategoryData(data))
+        .then(data => {
+            displayCategoryData(data)
+        })
 }
 const loadCategoryData = (category) => {
     fetch(`https://fakestoreapi.com/products/category/${category}`)
         .then(res => res.json())
-        .then(data => displayCategoryData(data))
+        .then(data => {
+            displayCategoryData(data)
+        })
 }
 const displayCategoryData = (products) => {
     const productsContainer = document.getElementById("products-container");
@@ -41,7 +54,7 @@ const displayCategoryData = (products) => {
                             ${product.title} <br> $${product.price}
                         </h2>
                         <div class="card-actions justify-between">
-                            <div class="btn px-5">details</div>
+                            <div onclick = loadDetails(${product.id}) class="btn px-5">details</div>
                             <div class="btn btn-primary px-5"><i class="fa-solid fa-cart-arrow-down"></i> Add</div>
                         </div>
                     </div>
@@ -57,6 +70,8 @@ const displayCategories = (categories) => {
     allBtn.classList.add('btn');
     allBtn.innerText = 'all';
     allBtn.addEventListener('click', () => {
+        removeActive();
+        allBtn.classList.add('active');
         loadAllData();
     })
     categoryContainer.appendChild(allBtn);
@@ -65,10 +80,18 @@ const displayCategories = (categories) => {
         newbtn.classList.add('btn');
         newbtn.innerHTML = `${category}`;
         newbtn.addEventListener('click', () => {
+            removeActive();
+            newbtn.classList.add('active');
             loadCategoryData(category);
         });
         categoryContainer.appendChild(newbtn);
     }
+}
+
+const loadDetails = (id) => {
+    fetch(`https://fakestoreapi.com/products/${id}`)
+        .then(res => res.json())
+        .then(data => console.log(data))
 }
 
 loadCategories();

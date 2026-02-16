@@ -10,3 +10,8 @@
 .chose-us-container {
     background-color: aliceblue;
 }
+
+.active {
+    background-color: blue;
+    color: white;
+}
