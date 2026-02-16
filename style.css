@@ -1,0 +1,12 @@
+.home-banner-container {
+    background-image: url(./Assets/banner.jpg);
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: center;
+    background-size: cover;
+    height: fit-content;
+}
+
+.chose-us-container {
+    background-color: aliceblue;
+}
